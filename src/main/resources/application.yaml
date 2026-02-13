@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: demosntrative
+  sql:
+      init:
+        mode: never
+
+  datasource:
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: ${POSTGRES_URL}
+    jdbc-url: ${POSTGRES_URL}
+    hikari:
+      jdbc-url: ${POSTGRES_URL}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: true
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: true
+  mongodb:
+    uri: ${MONGO_URL}
+  apps:
+    source:
+      file-path: ${FILE_PATH}
+      collection-mongo: ${MONGO_COLLECTION}
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_URL}
+  main:
+    allow-bean-definition-overriding: true
