@@ -23,15 +23,18 @@ public class WriterConfig {
         return items -> {
             for(RedisDataDTO dto : items) {
                 Map<String, String> fields = new HashMap<>();
+                Map<String, String> covenants = new HashMap<>();
                 fields.put("name", dto.name());
                 fields.put("document", dto.document());
-                fields.put("branch", dto.branch());
-                fields.put("account", dto.account());
+                covenants.put("branch", dto.branch());
+                covenants.put("account", dto.account());
 
-                String key = "user:" + dto.document();
-                log.info("Saving key: {}", key);
-                redisTemplate.opsForHash().putAll(key, fields);
-                redisTemplate.expire(key, Duration.ofHours(3));
+                String keyUser = "user:" + dto.document();
+                String keyCovenants = "convenats:" + dto.account();
+                log.info("Saving keyUser: {}", keyUser);
+                redisTemplate.opsForHash().putAll(keyUser, fields);
+                redisTemplate.opsForHash().putAll(keyCovenants, covenants);
+                redisTemplate.expire(keyUser, Duration.ofHours(3));
             }
         };
     }
