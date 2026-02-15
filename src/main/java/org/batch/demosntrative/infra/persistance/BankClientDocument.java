@@ -1,5 +1,6 @@
 package org.batch.demosntrative.infra.persistance;
 
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -7,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 
 @Document(collection = "teste-paulo")
-@Getter
+@Data
 public class BankClientDocument {
     @Id
     private String id;
