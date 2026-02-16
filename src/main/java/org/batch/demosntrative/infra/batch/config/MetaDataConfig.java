@@ -4,8 +4,6 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.repository.support.JdbcJobRepositoryFactoryBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,15 +36,5 @@ public class MetaDataConfig {
     @Primary
     public PlatformTransactionManager transactionManager(DataSource dataSource) {
         return new JdbcTransactionManager(dataSource);
-    }
-
-    @Bean
-    @Primary
-    public JobRepository jobRepository (DataSource dataSource, PlatformTransactionManager transactionManager) throws Exception {
-        var factory = new JdbcJobRepositoryFactoryBean();
-        factory.setDataSource(dataSource);
-        factory.setTransactionManager(transactionManager);
-        factory.setDatabaseType("POSTGRES");
-        return factory.getObject();
     }
 }
