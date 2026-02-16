@@ -35,6 +35,7 @@ public class WriterConfig {
                 redisTemplate.opsForHash().putAll(keyUser, fields);
                 redisTemplate.opsForHash().putAll(keyCovenants, covenants);
                 redisTemplate.expire(keyUser, Duration.ofHours(3));
+                redisTemplate.expire(keyCovenants, Duration.ofHours(3));
             }
         };
     }
