@@ -6,10 +6,10 @@ import org.batch.demosntrative.application.dto.RedisDataDTO;
 import org.springframework.batch.infrastructure.item.ItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
@@ -39,10 +39,15 @@ public class WriterConfig {
                 String keyUser = USER + dto.document();
                 String keyCovenants = COVENANTS + dto.account();
                 log.info("Saving keyUser: {}", keyUser);
-                redisTemplate.opsForHash().putAll(keyUser, fields);
-                redisTemplate.opsForHash().putAll(keyCovenants, covenants);
-                redisTemplate.expire(keyUser, TTL);
-                redisTemplate.expire(keyCovenants, TTL);
+
+                redisTemplate.executePipelined((RedisCallback<?>) connection -> {
+                    redisTemplate.opsForHash().putAll(keyUser, fields);
+                    redisTemplate.opsForHash().putAll(keyCovenants, covenants);
+                    redisTemplate.expire(keyUser, TTL);
+                    redisTemplate.expire(keyCovenants, TTL);
+                    return null;
+                });
+
             }
         };
     }
