@@ -17,6 +17,9 @@ import java.util.Map;
 @Slf4j
 public class WriterConfig {
     private final RedisTemplate<String, Object> redisTemplate;
+    private final static String USER = "user:";
+    private final static String COVENANTS = "covenats:";
+    private final static Duration TTL = Duration.ofHours(3);
 
     @Bean
     public ItemWriter<RedisDataDTO> writer() {
@@ -29,13 +32,13 @@ public class WriterConfig {
                 covenants.put("branch", dto.branch());
                 covenants.put("account", dto.account());
 
-                String keyUser = "user:" + dto.document();
-                String keyCovenants = "convenats:" + dto.account();
+                String keyUser = USER + dto.document();
+                String keyCovenants = COVENANTS + dto.account();
                 log.info("Saving keyUser: {}", keyUser);
                 redisTemplate.opsForHash().putAll(keyUser, fields);
                 redisTemplate.opsForHash().putAll(keyCovenants, covenants);
-                redisTemplate.expire(keyUser, Duration.ofHours(3));
-                redisTemplate.expire(keyCovenants, Duration.ofHours(3));
+                redisTemplate.expire(keyUser, TTL);
+                redisTemplate.expire(keyCovenants, TTL);
             }
         };
     }
