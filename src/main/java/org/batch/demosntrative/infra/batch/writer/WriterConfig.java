@@ -24,13 +24,17 @@ public class WriterConfig {
     @Bean
     public ItemWriter<RedisDataDTO> writer() {
         return items -> {
-            for(RedisDataDTO dto : items) {
-                Map<String, String> fields = new HashMap<>();
-                Map<String, String> covenants = new HashMap<>();
-                fields.put("name", dto.name());
-                fields.put("document", dto.document());
-                covenants.put("branch", dto.branch());
-                covenants.put("account", dto.account());
+            for (RedisDataDTO dto : items) {
+                Map<String, String> fields = Map.of(
+                        "name", dto.name(),
+                        "document", dto.document()
+                );
+
+                Map<String, String> covenants = Map.of(
+                        "branch", dto.branch(),
+                        "account", dto.account()
+                );
+
 
                 String keyUser = USER + dto.document();
                 String keyCovenants = COVENANTS + dto.account();
