@@ -14,11 +14,12 @@ public class JobRepositoryConfig {
 
     @Bean
     @Primary
-    public JobRepository jobRepository (DataSource dataSource, PlatformTransactionManager transactionManager) throws Exception {
+    public JobRepository jobRepositoryMeta (DataSource dataSource, PlatformTransactionManager transactionManager) throws Exception {
         var factory = new JdbcJobRepositoryFactoryBean();
         factory.setDataSource(dataSource);
         factory.setTransactionManager(transactionManager);
         factory.setDatabaseType("POSTGRES");
+        factory.afterPropertiesSet();
         return factory.getObject();
     }
 }
